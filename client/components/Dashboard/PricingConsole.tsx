@@ -54,4 +54,6 @@ const PricingConsole = () => {
       </Card>
     );
   };
+
+  export default PricingConsole;
   

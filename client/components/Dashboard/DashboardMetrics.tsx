@@ -1,16 +1,6 @@
 import React from 'react'
 import { Card, CardContent } from '../ui/card';
 
-interface StationMetrics
-{
-    grossMargin: number;
-    targetMargin: number;
-    currentPrice: number;
-    inventoryLevel: number;
-    projectedDemand: number;
-    revenue: number;
-}
-
 const DashboardMetrics = ({ metrics }: { metrics: StationMetrics }) =>
 {
     return (

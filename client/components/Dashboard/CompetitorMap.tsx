@@ -1,17 +1,6 @@
 import { Badge } from "../ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
-import { Map } from "lucide-react";
-
-// Types
-interface Competitor {
-    id: string;
-    name: string;
-    price: number;
-    distance: number;
-    latitude: number;
-    longitude: number;
-    priceComparison: 'below' | 'above' | 'equal';
-  }  
+import { Map } from "lucide-react"; 
 
 
 const CompetitorMap = ({ competitors }: { competitors: Competitor[] }) => {
