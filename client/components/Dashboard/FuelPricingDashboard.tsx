@@ -1,3 +1,5 @@
+"use client"
+
 import { Filter } from "lucide-react";
 import { Button } from "../ui/button";
 import Navigation from "./Navigation";
@@ -6,7 +8,7 @@ import CompetitorMap from "./CompetitorMap";
 import PricingConsole from "./PricingConsole";
 import AutomatedRules from "./AutomatedRules";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
-import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import SettingsMenu from "./SettingsMenu";
 
 
@@ -20,7 +22,10 @@ const FuelPricingDashboard = () =>
         inventoryLevel: 65,
         projectedDemand: 15000,
         revenue: 27865,
+        volumeSold: 200,
+        customerCount: 80
     };
+
 
     const mockCompetitors: Competitor[] = [
         {
@@ -53,7 +58,7 @@ const FuelPricingDashboard = () =>
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     <CompetitorMap competitors={mockCompetitors} />
                     <div className="space-y-6">
-                        <PricingConsole />
+                        <PricingConsole currentPrice={50} />
                         <AutomatedRules />
                     </div>
                 </div>
@@ -64,25 +69,26 @@ const FuelPricingDashboard = () =>
                             <CardTitle>Demand Forecast</CardTitle>
                         </CardHeader>
                         <CardContent className="h-[300px]">
-                            {/* <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={[
-                    { time: '00:00', current: 100, projected: 95 },
-                    { time: '04:00', current: 80, projected: 75 },
-                    { time: '08:00', current: 120, projected: 115 },
-                    { time: '12:00', current: 150, projected: 140 },
-                    { time: '16:00', current: 180, projected: 170 },
-                    { time: '20:00', current: 130, projected: 125 },
-                  ]}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="time" />
-                    <YAxis />
-                    <Tooltip />
-                    <Line type="monotone" dataKey="current" stroke="#2563eb" />
-                    <Line type="monotone" dataKey="projected" stroke="#16a34a" />
-                  </LineChart>
-                </ResponsiveContainer> */}
+                            <ResponsiveContainer width="100%" height="100%">
+                                <LineChart data={[
+                                    { time: '00:00', current: 100, projected: 95 },
+                                    { time: '04:00', current: 80, projected: 75 },
+                                    { time: '08:00', current: 120, projected: 115 },
+                                    { time: '12:00', current: 150, projected: 140 },
+                                    { time: '16:00', current: 180, projected: 170 },
+                                    { time: '20:00', current: 130, projected: 125 },
+                                ]}>
+                                    <CartesianGrid strokeDasharray="3 3" />
+                                    <XAxis dataKey="time" />
+                                    <YAxis />
+
+                                    <Line type="monotone" dataKey="current" stroke="#2563eb" />
+                                    <Line type="monotone" dataKey="projected" stroke="#16a34a" />
+                                </LineChart>
+                            </ResponsiveContainer>
                         </CardContent>
                     </Card>
+
 
                     <div className="space-y-6">
                         <SettingsMenu />

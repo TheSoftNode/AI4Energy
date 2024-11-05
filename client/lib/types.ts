@@ -1,4 +1,5 @@
-interface Competitor {
+interface Competitor
+{
     id: string;
     name: string;
     price: number;
@@ -6,13 +7,16 @@ interface Competitor {
     latitude: number;
     longitude: number;
     priceComparison: 'below' | 'above' | 'equal';
-  }
-  
-  interface StationMetrics {
+}
+
+interface StationMetrics
+{
     grossMargin: number;
     targetMargin: number;
     currentPrice: number;
     inventoryLevel: number;
     projectedDemand: number;
     revenue: number;
-  }
+    volumeSold: number;
+    customerCount: number;
+}
