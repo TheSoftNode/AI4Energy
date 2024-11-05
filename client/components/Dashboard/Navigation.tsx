@@ -39,11 +39,11 @@ const Navigation = () =>
         <div className="flex items-center space-x-8">
           <div className="flex items-center space-x-3">
             <img
-              src="/api/placeholder/32/32"
+              src="/logos/logo_energy.png"
               alt="Logo"
               className="h-8 w-8"
             />
-            <h1 className="text-xl font-bold">Fuel Price Optimizer</h1>
+            <h1 className="text-xl font-bold">AI4Energy</h1>
           </div>
 
           {/* Desktop Navigation */}
