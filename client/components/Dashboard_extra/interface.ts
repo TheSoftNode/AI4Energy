@@ -46,4 +46,3 @@ export interface MarketData {
   nearbyCompetitors: number;
 }
 
-

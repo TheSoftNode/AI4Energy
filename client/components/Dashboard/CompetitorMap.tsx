@@ -1,12 +1,18 @@
 "use client"
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card, CardHeader, CardContent, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
 import { Input } from '@/components/ui/input';
 import { Map, Filter, Maximize2, ZoomIn, ZoomOut } from 'lucide-react';
+import axios from 'axios';
+import { MapContainer, TileLayer, Marker, Popup, Circle } from 'react-leaflet';
+import 'leaflet/dist/leaflet.css';
+import L from 'leaflet';
+
+
 
 interface Competitor
 {
@@ -38,12 +44,44 @@ const CompetitorMap = ({
     const [selectedCompetitor, setSelectedCompetitor] = useState<Competitor | null>(null);
     const [showFilters, setShowFilters] = useState(false);
     const [priceFilter, setPriceFilter] = useState<'all' | 'below' | 'above'>('all');
+    const [userLocation, setUserLocation] = useState({ latitude: centerLat, longitude: centerLng });
+
+    const fetchUserLocation = async () =>
+    {
+        try
+        {
+            const response = await axios.get(`https://geoipfy.com/api/v1`, {
+                params: { apiKey: 'at_5YyF8eyT9jTVILm81B6VJqkwgRi5P' }
+            });
+            const { latitude, longitude } = response.data.location;
+            return { latitude, longitude };
+        } catch (error)
+        {
+            console.error("Failed to fetch location:", error);
+            return { latitude: 48.8566, longitude: 2.3522 };
+        }
+    };
+
+
+
+    useEffect(() =>
+    {
+        // Fetch user's location on component mount
+        const fetchLocation = async () =>
+        {
+            const location = await fetchUserLocation();
+            setUserLocation(location);
+        };
+        fetchLocation();
+    }, []);
 
     const filteredCompetitors = competitors.filter(competitor =>
     {
         if (priceFilter === 'all') return true;
         return competitor.priceComparison === priceFilter;
     });
+
+
 
     const handleCompetitorClick = (competitor: Competitor) =>
     {
@@ -116,21 +154,60 @@ const CompetitorMap = ({
 
                 <div className="relative h-[500px] bg-gray-100 rounded-lg overflow-hidden">
                     <div className="absolute inset-0">
-                        {/* Map placeholder - would be replaced with actual mapping library */}
-                        <div className="w-full h-full flex items-center justify-center">
+                        <MapContainer
+                            center={[userLocation.latitude, userLocation.longitude]}
+                            zoom={13}
+                            style={{ height: '100%', width: '100%' }}
+                        >
+                            <TileLayer
+                                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                                attribution='&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
+                            />
+                            {/* Render a circle around the user location for the search radius */}
+                            <Circle
+                                center={[userLocation.latitude, userLocation.longitude]}
+                                radius={searchRadius * 1000}
+                                color="blue"
+                            />
+
+                            {filteredCompetitors.map((competitor) => (
+                                <Marker
+                                    key={competitor.id}
+                                    position={[competitor.latitude, competitor.longitude]}
+                                    icon={L.icon({
+                                        iconUrl: competitor.priceComparison === 'below'
+                                            ? 'path/to/below-icon.png'
+                                            : 'path/to/above-icon.png',
+                                        iconSize: [25, 25],
+                                    })}
+                                    eventHandlers={{
+                                        click: () => handleCompetitorClick(competitor),
+                                    }}
+                                >
+                                    <Popup>
+                                        <div>
+                                            <h3>{competitor.name}</h3>
+                                            <p>{competitor.distance}km away</p>
+                                            <p>€{competitor.price.toFixed(2)}/L</p>
+                                        </div>
+                                    </Popup>
+                                </Marker>
+                            ))}
+                        </MapContainer>
+                        {/* <div className="w-full h-full flex items-center justify-center">
                             <Map className="h-12 w-12 text-gray-400" />
-                        </div>
+                        </div> */}
                     </div>
 
                     {/* Map controls */}
-                    <div className="absolute top-4 right-4 flex flex-col space-y-2">
+                    {/* <div className="absolute top-4 right-4 flex flex-col space-y-2">
                         <Button variant="secondary" size="sm">
                             <ZoomIn className="h-4 w-4" />
                         </Button>
                         <Button variant="secondary" size="sm">
                             <ZoomOut className="h-4 w-4" />
                         </Button>
-                    </div>
+                    </div> */}
 
                     {/* Competitor details panel */}
                     {selectedCompetitor && (

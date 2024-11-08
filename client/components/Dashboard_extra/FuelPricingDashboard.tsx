@@ -15,16 +15,13 @@ import CompetitorMap from './CompetitorMap';
 import PricingConsole from './PricingConsole';
 import SettingsMenu from '../Dashboard/SettingsMenu';
 import { DashboardProvider, useDashboard } from './DashboardProvider';
-import { DashboardGrid, DashboardLayout, DashboardSection } from './Layout';
+import DashboardLayout, { DashboardGrid, DashboardSection } from './Layout';
 
 const DashboardContent = () =>
 {
     const {
-        navigation,
         metrics,
         competitors,
-        filters,
-        setFilters
     } = useDashboard();
 
     const demandForecast = [

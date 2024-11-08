@@ -29,8 +29,8 @@ import
 import { Badge } from '@/components/ui/badge';
 import { useCallback } from 'react';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
-import type { DashboardView } from './interface';
 import { useDashboard } from './DashboardProvider';
+import { DashboardView } from './app-state';
 
 interface NavigationProps
 {
@@ -80,11 +80,11 @@ const Navigation: React.FC<NavigationProps> = ({ currentView }) =>
             icon: <Activity className="h-4 w-4" />,
             view: 'pricing' as const,
         },
-        {
-            title: 'Competition',
-            icon: <TrendingUp className="h-4 w-4" />,
-            view: 'competition' as const,
-        },
+        // {
+        //     title: 'Competition',
+        //     icon: <TrendingUp className="h-4 w-4" />,
+        //     view: 'competition' as const,
+        // },
         {
             title: 'Analytics',
             icon: <BarChart2 className="h-4 w-4" />,
