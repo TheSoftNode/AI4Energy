@@ -6,33 +6,33 @@ import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import
-  {
-    TrendingUp,
-    TrendingDown,
-    AlertTriangle,
-    History,
-    ArrowRight,
-    RotateCcw,
-    Lock,
-    Unlock,
-    Share2,
-    BarChart2
-  } from 'lucide-react';
+{
+  TrendingUp,
+  TrendingDown,
+  AlertTriangle,
+  History,
+  ArrowRight,
+  RotateCcw,
+  Lock,
+  Unlock,
+  Share2,
+  BarChart2
+} from 'lucide-react';
 import
-  {
-    Tooltip,
-    TooltipContent,
-    TooltipProvider,
-    TooltipTrigger,
-  } from '@/components/ui/tooltip';
+{
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 import
-  {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-  } from '@/components/ui/select';
+{
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { useDashboard } from './DashboardProvider';
 
@@ -156,7 +156,7 @@ const PricingConsole: React.FC<PricingConsoleProps> = ({
         <div className="flex items-center justify-between">
           <div className="space-y-1">
             <CardTitle className="flex items-center space-x-2">
-              <span>Price Adjustment</span>
+              <span className='text-base'>Price Adjustment</span>
               {priceLocked && (
                 <Badge variant="outline" className="ml-2">Locked</Badge>
               )}
@@ -191,7 +191,7 @@ const PricingConsole: React.FC<PricingConsoleProps> = ({
 
       <CardContent className="space-y-6">
         <div className="space-y-4">
-          <div className="flex justify-between items-center">
+          <div className="flex justify-between gap-x-4 items-center">
             <Select
               value={adjustmentMode}
               onValueChange={(value: 'manual' | 'smart') => setAdjustmentMode(value)}
@@ -218,17 +218,20 @@ const PricingConsole: React.FC<PricingConsoleProps> = ({
 
           <div className="flex justify-between items-end">
             <span className="text-sm font-medium">Current Price</span>
-            <div className="text-right">
-              <span className="text-2xl font-bold">
-                €{price.toFixed(3)}
-              </span>
-              <span className="text-sm text-gray-500 ml-1">/L</span>
+            <div className="text-right flex gap-4">
+              <div className='flex'>
+                <span className="text-xl font-bold">
+                  €{price.toFixed(3)}
+                </span>
+                <span className="text-lg text-gray-500 ml-1">/L</span>
+              </div>
+
               {price !== marketData.competitorAvgPrice && (
                 <Badge
                   variant="outline"
                   className={`ml-2 ${price > marketData.competitorAvgPrice
-                      ? 'bg-red-50 text-red-700'
-                      : 'bg-green-50 text-green-700'
+                    ? 'bg-red-50 text-red-700'
+                    : 'bg-green-50 text-green-700'
                     }`}
                 >
                   {price > marketData.competitorAvgPrice ? 'Above' : 'Below'} Market
@@ -254,9 +257,9 @@ const PricingConsole: React.FC<PricingConsoleProps> = ({
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1  md:grid-cols-2 gap-4">
           <div className="p-4 rounded-lg bg-blue-50 transition-all hover:bg-blue-100">
-            <div className="flex items-center justify-between mb-2">
+            <div className="flex flex-wrap items-center justify-between mb-2">
               <span className="text-sm text-blue-700">Margin Impact</span>
               {impact.margin > 0 ? (
                 <TrendingUp className="h-4 w-4 text-blue-700" />
@@ -264,13 +267,13 @@ const PricingConsole: React.FC<PricingConsoleProps> = ({
                 <TrendingDown className="h-4 w-4 text-blue-700" />
               )}
             </div>
-            <span className="text-xl font-bold text-blue-900">
+            <span className="text-xs lg:text-xl font-bold text-blue-900">
               {impact.margin > 0 ? '+' : ''}€{impact.margin.toFixed(2)}
             </span>
           </div>
 
           <div className="p-4 rounded-lg bg-green-50 transition-all hover:bg-green-100">
-            <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center flex-wrap justify-between mb-2">
               <span className="text-sm text-green-700">Volume Impact</span>
               {impact.volume > 0 ? (
                 <TrendingUp className="h-4 w-4 text-green-700" />
@@ -278,13 +281,13 @@ const PricingConsole: React.FC<PricingConsoleProps> = ({
                 <TrendingDown className="h-4 w-4 text-green-700" />
               )}
             </div>
-            <span className="text-xl font-bold text-green-900">
+            <span className="text-xs lg:text-xl font-bold text-green-900">
               {impact.volume > 0 ? '+' : ''}{impact.volume.toFixed(1)}%
             </span>
           </div>
 
           <div className="p-4 rounded-lg bg-purple-50 transition-all hover:bg-purple-100">
-            <div className="flex items-center justify-between mb-2">
+            <div className="flex flex-wrap items-center justify-between mb-2">
               <span className="text-sm text-purple-700">Revenue Impact</span>
               {impact.revenue > 0 ? (
                 <TrendingUp className="h-4 w-4 text-purple-700" />
@@ -292,13 +295,13 @@ const PricingConsole: React.FC<PricingConsoleProps> = ({
                 <TrendingDown className="h-4 w-4 text-purple-700" />
               )}
             </div>
-            <span className="text-xl font-bold text-purple-900">
+            <span className="text-xs lg:text-xl font-bold text-purple-900">
               {impact.revenue > 0 ? '+' : ''}€{impact.revenue.toFixed(2)}
             </span>
           </div>
 
-          <div className="p-4 rounded-lg bg-orange-50 transition-all hover:bg-orange-100">
-            <div className="flex items-center justify-between mb-2">
+          <div className="p-5 rounded-lg bg-orange-50 transition-all hover:bg-orange-100">
+            <div className="flex flex-wrap items-center justify-between mb-2">
               <span className="text-sm text-orange-700">Market Share</span>
               {impact.marketShare > 0 ? (
                 <TrendingUp className="h-4 w-4 text-orange-700" />
@@ -306,7 +309,7 @@ const PricingConsole: React.FC<PricingConsoleProps> = ({
                 <TrendingDown className="h-4 w-4 text-orange-700" />
               )}
             </div>
-            <span className="text-xl font-bold text-orange-900">
+            <span className="text-xs lg:text-xl font-bold text-orange-900">
               {impact.marketShare > 0 ? '+' : ''}{impact.marketShare.toFixed(1)}%
             </span>
           </div>

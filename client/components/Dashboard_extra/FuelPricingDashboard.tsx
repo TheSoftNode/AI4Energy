@@ -18,11 +18,12 @@ import { DashboardProvider, useDashboard } from './DashboardProvider';
 import DashboardLayout, { DashboardGrid, DashboardSection } from './Layout';
 import { DashboardView } from './app-state';
 
-interface DashboardContentProps {
+interface DashboardContentProps
+{
     currentView: DashboardView;
-  }
+}
 
-const DashboardContent:React.FC<DashboardContentProps>  = ({currentView}) =>
+const DashboardContent: React.FC<DashboardContentProps> = ({ currentView }) =>
 {
     const {
         metrics,

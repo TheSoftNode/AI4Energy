@@ -1,8 +1,8 @@
 "use client"
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Download, Filter, RefreshCw } from 'lucide-react';
+import { Calendar, Download, Filter, RefreshCw } from 'lucide-react';
 import AnalyticsDashboard from '@/components/Dashboard_extra/AnalyticsDashboard';
 import SettingsMenu from '@/components/Dashboard/SettingsMenu';
 import { DashboardProvider, useDashboard } from '@/components/Dashboard_extra/DashboardProvider';
@@ -11,6 +11,9 @@ import DashboardMetrics from '@/components/Dashboard_extra/DashboardMetrics';
 import CompetitorMap from '@/components/Dashboard_extra/CompetitorMap';
 import PricingConsole from '@/components/Dashboard_extra/PricingConsole';
 import AutomatedRules from '@/components/Dashboard_extra/AutomatedRules';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { CartesianGrid, Line, LineChart, ResponsiveContainer, XAxis, YAxis } from 'recharts';
 
 const DashboardContent = () =>
 {
@@ -28,6 +31,8 @@ const DashboardContent = () =>
                 return <AnalyticsDashboard />;
             case 'settings':
                 return <SettingsMenu />;
+            case 'competition':
+                return <CompetitorMap competitors={[]} centerLat={48.8566} centerLng={2.3522} radius={5} />;
             default:
                 return <OverviewDashboard />;
         }
@@ -54,6 +59,7 @@ const DashboardLayout = () =>
 
 const OverviewDashboard = () =>
 {
+    const [timeframe, setTimeframe] = useState('today');
     return (
         <div className="space-y-6">
             <div className="flex items-center justify-between">
@@ -64,6 +70,21 @@ const OverviewDashboard = () =>
                     </p>
                 </div>
                 <div className="flex items-center space-x-3">
+                    <Select value={timeframe} onValueChange={setTimeframe}>
+                        <SelectTrigger className="w-[180px]">
+                            <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="today">Today</SelectItem>
+                            <SelectItem value="week">Last 7 Days</SelectItem>
+                            <SelectItem value="month">Last 30 Days</SelectItem>
+                            <SelectItem value="quarter">Last Quarter</SelectItem>
+                        </SelectContent>
+                    </Select>
+                    <Button variant="outline" size="sm">
+                        <Calendar className="h-4 w-4 mr-2" />
+                        Custom Range
+                    </Button>
                     <Button variant="outline" size="sm">
                         <RefreshCw className="h-4 w-4 mr-2" />
                         Refresh
@@ -99,6 +120,38 @@ const OverviewDashboard = () =>
                     <AutomatedRules />
                 </div>
             </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <Card className="lg:col-span-2">
+                        <CardHeader>
+                            <CardTitle>Demand Forecast</CardTitle>
+                        </CardHeader>
+                        <CardContent className="h-[300px]">
+                            <ResponsiveContainer width="100%" height="100%">
+                                <LineChart data={[
+                                    { time: '00:00', current: 100, projected: 95 },
+                                    { time: '04:00', current: 80, projected: 75 },
+                                    { time: '08:00', current: 120, projected: 115 },
+                                    { time: '12:00', current: 150, projected: 140 },
+                                    { time: '16:00', current: 180, projected: 170 },
+                                    { time: '20:00', current: 130, projected: 125 },
+                                ]}>
+                                    <CartesianGrid strokeDasharray="3 3" />
+                                    <XAxis dataKey="time" />
+                                    <YAxis />
+
+                                    <Line type="monotone" dataKey="current" stroke="#2563eb" />
+                                    <Line type="monotone" dataKey="projected" stroke="#16a34a" />
+                                </LineChart>
+                            </ResponsiveContainer>
+                        </CardContent>
+                    </Card>
+
+
+                    <div className="space-y-6">
+                        <SettingsMenu />
+                    </div>
+                </div>
         </div>
     );
 };

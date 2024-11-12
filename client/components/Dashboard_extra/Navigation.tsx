@@ -15,7 +15,8 @@ import
     Home,
     Activity,
     TrendingUp,
-    BarChart2
+    BarChart2,
+    Settings2Icon
 } from 'lucide-react';
 import
 {
@@ -90,6 +91,11 @@ const Navigation: React.FC<NavigationProps> = ({ currentView }) =>
             icon: <BarChart2 className="h-4 w-4" />,
             view: 'analytics' as const,
             badge: 'New',
+        },
+        {
+            title: 'Settings',
+            icon: <Settings2Icon className="h-4 w-4" />,
+            view: 'settings' as const,
         },
     ];
 

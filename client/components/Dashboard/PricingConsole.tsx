@@ -1,26 +1,29 @@
 "use client"
-  
+
 import React, { useState, useEffect } from 'react';
 import { Card, CardHeader, CardContent, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { 
-  TrendingUp, 
-  TrendingDown, 
-  AlertTriangle, 
+import
+{
+  TrendingUp,
+  TrendingDown,
+  AlertTriangle,
   History,
   ArrowRight,
   RotateCcw
 } from 'lucide-react';
 
-interface PriceImpact {
+interface PriceImpact
+{
   margin: number;
   volume: number;
   revenue: number;
 }
 
-interface PricingConsoleProps {
+interface PricingConsoleProps
+{
   currentPrice: number;
   minPrice?: number;
   maxPrice?: number;
@@ -34,9 +37,10 @@ const PricingConsole: React.FC<PricingConsoleProps> = ({
   maxPrice = 2.5,
   onPriceChange,
   onPriceConfirm
-}) => {
+}) =>
+{
   const [price, setPrice] = useState(currentPrice);
-  const [priceHistory, setPriceHistory] = useState<Array<{price: number; timestamp: Date}>>([
+  const [priceHistory, setPriceHistory] = useState<Array<{ price: number; timestamp: Date }>>([
     { price: currentPrice, timestamp: new Date() }
   ]);
   const [showHistory, setShowHistory] = useState(false);
@@ -46,15 +50,17 @@ const PricingConsole: React.FC<PricingConsoleProps> = ({
     revenue: 0
   });
 
-  useEffect(() => {
-    const calculateImpact = () => {
+  useEffect(() =>
+  {
+    const calculateImpact = () =>
+    {
       const priceDiff = price - currentPrice;
       const volumeImpact = -priceDiff * 5000; // Simplified elasticity model
       const newVolume = 100000 + volumeImpact; // Base volume of 100000
       const oldRevenue = currentPrice * 100000;
       const newRevenue = price * newVolume;
       const revenueImpact = newRevenue - oldRevenue;
-      
+
       return {
         margin: priceDiff * newVolume,
         volume: (volumeImpact / 100000) * 100,
@@ -65,12 +71,14 @@ const PricingConsole: React.FC<PricingConsoleProps> = ({
     setImpact(calculateImpact());
   }, [price, currentPrice]);
 
-  const handlePriceChange = (value: number[]) => {
+  const handlePriceChange = (value: number[]) =>
+  {
     setPrice(value[0]);
     onPriceChange?.(value[0]);
   };
 
-  const handlePriceConfirm = () => {
+  const handlePriceConfirm = () =>
+  {
     setPriceHistory([
       { price, timestamp: new Date() },
       ...priceHistory.slice(0, 9)
@@ -78,11 +86,12 @@ const PricingConsole: React.FC<PricingConsoleProps> = ({
     onPriceConfirm?.(price);
   };
 
-  const formatTimeDiff = (date: Date) => {
+  const formatTimeDiff = (date: Date) =>
+  {
     const diff = new Date().getTime() - date.getTime();
     const hours = Math.floor(diff / (1000 * 60 * 60));
     const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-    
+
     if (hours > 0) return `${hours}h ago`;
     return `${minutes}m ago`;
   };
@@ -185,7 +194,7 @@ const PricingConsole: React.FC<PricingConsoleProps> = ({
             <h4 className="font-medium">Recent Price Changes</h4>
             <div className="space-y-2 max-h-48 overflow-y-auto">
               {priceHistory.map((record, index) => (
-                <div 
+                <div
                   key={index}
                   className="flex items-center justify-between p-2 bg-gray-50 rounded hover:bg-gray-100 transition-colors"
                 >
@@ -202,7 +211,7 @@ const PricingConsole: React.FC<PricingConsoleProps> = ({
         )}
 
         <div className="flex space-x-3">
-          <Button 
+          <Button
             className="flex-1 transition-all"
             onClick={handlePriceConfirm}
             disabled={price === currentPrice}
@@ -210,7 +219,7 @@ const PricingConsole: React.FC<PricingConsoleProps> = ({
             Confirm Change
             <ArrowRight className="ml-2 h-4 w-4" />
           </Button>
-          <Button 
+          <Button
             variant="outline"
             onClick={() => setPrice(currentPrice)}
             disabled={price === currentPrice}

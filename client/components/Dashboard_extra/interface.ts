@@ -49,5 +49,8 @@ export interface MarketData
   marketShare: number;
   pricePosition: 'below' | 'above' | 'equal';
   nearbyCompetitors: number;
+  avgDailyRevenue: number;
+  avgVolumeSold: number;
+  avgCustomerCount: number;
 }
 

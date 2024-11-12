@@ -3,54 +3,54 @@
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import
-  {
-    TrendingUp,
-    TrendingDown,
-    AlertTriangle,
-    CircleDollarSign,
-    Droplet,
-    BarChart3,
-    Clock,
-    Target,
-    Share2,
-    Calendar,
-    RefreshCcw,
-    ArrowRight,
-    ChevronDown
-  } from 'lucide-react';
+{
+  TrendingUp,
+  TrendingDown,
+  AlertTriangle,
+  CircleDollarSign,
+  Droplet,
+  BarChart3,
+  Clock,
+  Target,
+  Share2,
+  Calendar,
+  RefreshCcw,
+  ArrowRight,
+  ChevronDown
+} from 'lucide-react';
 import
-  {
-    Tooltip,
-    TooltipContent,
-    TooltipProvider,
-    TooltipTrigger,
-  } from "@/components/ui/tooltip";
+{
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import
-  {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-  } from "@/components/ui/select";
+{
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import
-  {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-  } from "@/components/ui/dialog";
+{
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import
-  {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
-  } from "@/components/ui/dropdown-menu";
+{
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer } from 'recharts';
 import { useDashboard } from './DashboardProvider';
 
@@ -136,7 +136,7 @@ const MetricCard = ({
             </div>
           </div>
 
-          <div className="flex items-end justify-between">
+          <div className="flex items-end flex-wrap justify-between">
             <span className="text-2xl font-bold">
               {format === 'currency' && '€'}
               {typeof value === 'number' ? value.toLocaleString() : value}
@@ -260,7 +260,6 @@ const MetricCard = ({
 const DashboardMetrics = () =>
 {
   const { metrics, marketData } = useDashboard();
-  const [timeframe, setTimeframe] = useState('today');
 
   // Mock historical data - replace with real data in production
   const generateHistoricalData = (baseValue: number) =>
@@ -301,7 +300,7 @@ const DashboardMetrics = () =>
       change: 1.2,
       icon: <CircleDollarSign className="h-4 w-4" />,
       format: 'currency',
-      trend: 'up',
+      trend: 'up' as 'up',
       historicalData: generateHistoricalData(metrics.currentPrice),
       analysis: 'Price movements have remained competitive while maintaining profitability targets.',
       benchmark: {
@@ -309,43 +308,68 @@ const DashboardMetrics = () =>
         label: 'Market Average'
       }
     },
-    // Continue with other metrics...
+    {
+      title: 'Inventory Level',
+      value: metrics.inventoryLevel,
+      target: 100,
+      icon: <Droplet className="h-4 w-4" />,
+      format: 'percentage',
+      alert: metrics.inventoryLevel < 30,
+      trend: 'down' as 'down',
+      historicalData: generateHistoricalData(metrics.inventoryLevel),
+      analysis: 'Inventory levels are below optimal range, suggesting need for restock planning.',
+      benchmark: {
+        value: 85,
+        label: 'Optimal Level'
+      }
+    },
+    {
+      title: 'Daily Revenue',
+      value: metrics.revenue,
+      change: 3.5,
+      target: 30000,
+      icon: <BarChart3 className="h-4 w-4" />,
+      format: 'currency',
+      trend: 'up' as 'up',
+      historicalData: generateHistoricalData(metrics.revenue),
+      analysis: 'Revenue growth remains strong, exceeding monthly targets consistently.',
+      benchmark: {
+        value: marketData.avgDailyRevenue,
+        label: 'Market Average'
+      }
+    },
+    {
+      title: 'Volume Sold (L)',
+      value: metrics.volumeSold,
+      change: -1.2,
+      icon: <Clock className="h-4 w-4" />,
+      format: 'number',
+      trend: 'down' as 'down',
+      historicalData: generateHistoricalData(metrics.volumeSold),
+      analysis: 'Slight decrease in volume, but offset by higher margins per unit.',
+      benchmark: {
+        value: marketData.avgVolumeSold,
+        label: 'Industry Average'
+      }
+    },
+    {
+      title: 'Customer Count',
+      value: metrics.customerCount,
+      change: 2.8,
+      icon: <BarChart3 className="h-4 w-4" />,
+      format: 'number',
+      trend: 'up' as 'up',
+      historicalData: generateHistoricalData(metrics.customerCount),
+      analysis: 'Customer base growing steadily, indicating effective acquisition strategies.',
+      benchmark: {
+        value: marketData.avgCustomerCount,
+        label: 'Regional Average'
+      }
+    }
   ];
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-4">
-          <Select value={timeframe} onValueChange={setTimeframe}>
-            <SelectTrigger className="w-[180px]">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="today">Today</SelectItem>
-              <SelectItem value="week">Last 7 Days</SelectItem>
-              <SelectItem value="month">Last 30 Days</SelectItem>
-              <SelectItem value="quarter">Last Quarter</SelectItem>
-            </SelectContent>
-          </Select>
-
-          <Button variant="outline" size="sm">
-            <RefreshCcw className="h-4 w-4 mr-2" />
-            Refresh
-          </Button>
-        </div>
-
-        <div className="flex items-center space-x-2">
-          <Button variant="outline" size="sm">
-            <Calendar className="h-4 w-4 mr-2" />
-            Custom Range
-          </Button>
-          <Button variant="outline" size="sm">
-            <Share2 className="h-4 w-4 mr-2" />
-            Export
-          </Button>
-        </div>
-      </div>
-
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4">
         {cards.map((card, index) => (
           <MetricCard
