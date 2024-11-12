@@ -16,8 +16,13 @@ import PricingConsole from './PricingConsole';
 import SettingsMenu from '../Dashboard/SettingsMenu';
 import { DashboardProvider, useDashboard } from './DashboardProvider';
 import DashboardLayout, { DashboardGrid, DashboardSection } from './Layout';
+import { DashboardView } from './app-state';
 
-const DashboardContent = () =>
+interface DashboardContentProps {
+    currentView: DashboardView;
+  }
+
+const DashboardContent:React.FC<DashboardContentProps>  = ({currentView}) =>
 {
     const {
         metrics,
@@ -36,9 +41,9 @@ const DashboardContent = () =>
     // Determine which view to show based on navigation state
     const renderView = () =>
     {
-        switch (navigation.currentView)
+        switch (currentView)
         {
-            case 'dashboard':
+            case 'overview':
                 return (
                     <>
                         <DashboardSection
@@ -183,17 +188,19 @@ const DashboardContent = () =>
 
     return (
         <DashboardLayout>
-            <Navigation />
+            <Navigation currentView={currentView} />
             {renderView()}
         </DashboardLayout>
     );
 };
 
-const FuelPricingDashboard = () =>
+const FuelPricingDashboard: React.FC = () =>
 {
+    const [currentView, setCurrentView] = React.useState<DashboardView>('overview');
+
     return (
         <DashboardProvider>
-            <DashboardContent />
+            <DashboardContent currentView={currentView} />
         </DashboardProvider>
     );
 };

@@ -1,5 +1,3 @@
-// components/MarketInsights.tsx
-
 import React from 'react';
 import { Card, CardHeader, CardContent, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';

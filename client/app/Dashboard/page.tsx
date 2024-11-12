@@ -1,21 +1,20 @@
-import React from 'react';
-import { useRouter } from 'next/router';
+"use client"
 
+import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Download, Filter, RefreshCw } from 'lucide-react';
 import AnalyticsDashboard from '@/components/Dashboard_extra/AnalyticsDashboard';
 import SettingsMenu from '@/components/Dashboard/SettingsMenu';
-import { DashboardProvider } from '@/components/Dashboard_extra/DashboardProvider';
+import { DashboardProvider, useDashboard } from '@/components/Dashboard_extra/DashboardProvider';
 import Navigation from '@/components/Dashboard_extra/Navigation';
 import DashboardMetrics from '@/components/Dashboard_extra/DashboardMetrics';
 import CompetitorMap from '@/components/Dashboard_extra/CompetitorMap';
 import PricingConsole from '@/components/Dashboard_extra/PricingConsole';
 import AutomatedRules from '@/components/Dashboard_extra/AutomatedRules';
 
-const DashboardLayout = () =>
+const DashboardContent = () =>
 {
-    const router = useRouter();
-    const { view = 'overview' } = router.query;
+    const { view } = useDashboard();
 
     const renderContent = () =>
     {
@@ -35,13 +34,20 @@ const DashboardLayout = () =>
     };
 
     return (
+        <div className="min-h-screen bg-gray-50">
+            <Navigation currentView={view} />
+            <main className="container mx-auto px-4 pt-20 pb-8">
+                {renderContent()}
+            </main>
+        </div>
+    );
+};
+
+const DashboardLayout = () =>
+{
+    return (
         <DashboardProvider>
-            <div className="min-h-screen bg-gray-50">
-                <Navigation />
-                <main className="container mx-auto px-4 pt-20 pb-8">
-                    {renderContent()}
-                </main>
-            </div>
+            <DashboardContent />
         </DashboardProvider>
     );
 };
@@ -50,7 +56,6 @@ const OverviewDashboard = () =>
 {
     return (
         <div className="space-y-6">
-            {/* Header */}
             <div className="flex items-center justify-between">
                 <div>
                     <h1 className="text-2xl font-bold">Dashboard Overview</h1>
@@ -74,14 +79,12 @@ const OverviewDashboard = () =>
                 </div>
             </div>
 
-            {/* Key Metrics */}
             <DashboardMetrics />
 
-            {/* Main Content */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <div className="lg:col-span-2">
                     <CompetitorMap
-                        competitors={[]} // Pass your competitors data here
+                        competitors={[]}
                         centerLat={48.8566}
                         centerLng={2.3522}
                         radius={5}

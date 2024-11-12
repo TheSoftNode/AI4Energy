@@ -1,4 +1,4 @@
-// components/CompetitorMap.tsx
+"use client"
 
 import React, { useState, useEffect } from 'react';
 import { Card, CardHeader, CardContent, CardTitle } from '@/components/ui/card';
@@ -7,46 +7,46 @@ import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
 import { Input } from '@/components/ui/input';
 import
-    {
-        Map,
-        Filter,
-        Maximize2,
-        ZoomIn,
-        ZoomOut,
-        Layers,
-        Activity,
-        Clock,
-        Search,
-        Share2,
-        ChevronRight,
-        BarChart2,
-        RefreshCw,
-        Info
-    } from 'lucide-react';
+{
+    Map,
+    Filter,
+    Maximize2,
+    ZoomIn,
+    ZoomOut,
+    Layers,
+    Activity,
+    Clock,
+    Search,
+    Share2,
+    ChevronRight,
+    BarChart2,
+    RefreshCw,
+    Info
+} from 'lucide-react';
 import
-    {
-        Dialog,
-        DialogContent,
-        DialogDescription,
-        DialogHeader,
-        DialogTitle,
-        DialogTrigger,
-    } from "@/components/ui/dialog";
+{
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog";
 import
-    {
-        Select,
-        SelectContent,
-        SelectItem,
-        SelectTrigger,
-        SelectValue,
-    } from "@/components/ui/select";
+{
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
 import
-    {
-        Tooltip,
-        TooltipContent,
-        TooltipProvider,
-        TooltipTrigger,
-    } from "@/components/ui/tooltip";
+{
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer } from 'recharts';
 import { useDashboard } from './DashboardProvider';
 
@@ -608,8 +608,8 @@ const CompetitorMap: React.FC<CompetitorMapProps> = ({
                                                     ].map((recommendation, index) => (
                                                         <div key={index} className="flex items-start space-x-3 p-3 bg-gray-50 rounded-lg">
                                                             <div className={`mt-1 h-2 w-2 rounded-full ${recommendation.type === 'positive' ? 'bg-green-500' :
-                                                                    recommendation.type === 'neutral' ? 'bg-blue-500' :
-                                                                        'bg-yellow-500'
+                                                                recommendation.type === 'neutral' ? 'bg-blue-500' :
+                                                                    'bg-yellow-500'
                                                                 }`} />
                                                             <div className="flex-1">
                                                                 <div className="flex items-center justify-between">

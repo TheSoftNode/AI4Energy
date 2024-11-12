@@ -1,55 +1,61 @@
-// components/DashboardMetrics.tsx
+"use client"
 
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { 
-  TrendingUp, 
-  TrendingDown, 
-  AlertTriangle, 
-  CircleDollarSign,
-  Droplet,
-  BarChart3,
-  Clock,
-  Target,
-  Share2,
-  Calendar,
-  RefreshCcw,
-  ArrowRight,
-  ChevronDown
-} from 'lucide-react';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import
+  {
+    TrendingUp,
+    TrendingDown,
+    AlertTriangle,
+    CircleDollarSign,
+    Droplet,
+    BarChart3,
+    Clock,
+    Target,
+    Share2,
+    Calendar,
+    RefreshCcw,
+    ArrowRight,
+    ChevronDown
+  } from 'lucide-react';
+import
+  {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+  } from "@/components/ui/tooltip";
+import
+  {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+  } from "@/components/ui/select";
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import
+  {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+  } from "@/components/ui/dialog";
+import
+  {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+  } from "@/components/ui/dropdown-menu";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer } from 'recharts';
 import { useDashboard } from './DashboardProvider';
 
-interface MetricCardProps {
+interface MetricCardProps
+{
   title: string;
   value: number | string;
   change?: number;
@@ -66,28 +72,31 @@ interface MetricCardProps {
   };
 }
 
-const MetricCard = ({ 
-  title, 
-  value, 
-  change, 
-  target, 
-  icon, 
-  format, 
+const MetricCard = ({
+  title,
+  value,
+  change,
+  target,
+  icon,
+  format,
   alert,
   trend,
   historicalData,
   analysis,
-  benchmark 
-}: MetricCardProps) => {
+  benchmark
+}: MetricCardProps) =>
+{
   const [showDetails, setShowDetails] = useState(false);
 
-  const getChangeColor = (change: number) => {
+  const getChangeColor = (change: number) =>
+  {
     if (change > 0) return 'text-green-500';
     if (change < 0) return 'text-red-500';
     return 'text-gray-500';
   };
 
-  const getProgressColor = (value: number, target: number) => {
+  const getProgressColor = (value: number, target: number) =>
+  {
     const percentage = (value / target) * 100;
     if (percentage >= 90) return 'bg-green-500';
     if (percentage >= 70) return 'bg-yellow-500';
@@ -116,9 +125,9 @@ const MetricCard = ({
                   </Tooltip>
                 </TooltipProvider>
               )}
-              <Button 
-                variant="ghost" 
-                size="sm" 
+              <Button
+                variant="ghost"
+                size="sm"
                 className="h-8 w-8 p-0"
                 onClick={() => setShowDetails(true)}
               >
@@ -194,9 +203,9 @@ const MetricCard = ({
                     <XAxis dataKey="date" />
                     <YAxis />
                     <RechartsTooltip />
-                    <Line 
-                      type="monotone" 
-                      dataKey="value" 
+                    <Line
+                      type="monotone"
+                      dataKey="value"
                       stroke="#2563eb"
                       name={title}
                     />
@@ -248,13 +257,16 @@ const MetricCard = ({
   );
 };
 
-const DashboardMetrics = () => {
+const DashboardMetrics = () =>
+{
   const { metrics, marketData } = useDashboard();
   const [timeframe, setTimeframe] = useState('today');
 
   // Mock historical data - replace with real data in production
-  const generateHistoricalData = (baseValue: number) => {
-    const dates = Array.from({ length: 30 }, (_, i) => {
+  const generateHistoricalData = (baseValue: number) =>
+  {
+    const dates = Array.from({ length: 30 }, (_, i) =>
+    {
       const date = new Date();
       date.setDate(date.getDate() - (29 - i));
       return date.toISOString().split('T')[0];

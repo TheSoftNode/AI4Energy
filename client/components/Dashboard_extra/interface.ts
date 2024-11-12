@@ -1,7 +1,8 @@
 // types/interfaces.ts
 import * as React from 'react';
 
-export interface StationMetrics {
+export interface StationMetrics
+{
   grossMargin: number;
   targetMargin: number;
   currentPrice: number;
@@ -12,7 +13,8 @@ export interface StationMetrics {
   customerCount: number;
 }
 
-export interface Competitor {
+export interface Competitor
+{
   id: string;
   name: string;
   price: number;
@@ -22,14 +24,16 @@ export interface Competitor {
   priceComparison: 'below' | 'above' | 'equal';
 }
 
-export interface PriceChange {
+export interface PriceChange
+{
   price: number;
   timestamp: Date;
   type: 'manual' | 'automated';
   reason?: string;
 }
 
-export interface PriceRule {
+export interface PriceRule
+{
   id: string;
   name: string;
   description: string;
@@ -39,7 +43,8 @@ export interface PriceRule {
   category: 'protection' | 'optimization' | 'timing';
 }
 
-export interface MarketData {
+export interface MarketData
+{
   competitorAvgPrice: number;
   marketShare: number;
   pricePosition: 'below' | 'above' | 'equal';

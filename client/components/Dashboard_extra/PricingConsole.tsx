@@ -1,46 +1,51 @@
-// components/PricingConsole.tsx
+"use client"
 
 import React, { useState, useEffect } from 'react';
 import { Card, CardHeader, CardContent, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { 
-  TrendingUp, 
-  TrendingDown, 
-  AlertTriangle, 
-  History,
-  ArrowRight,
-  RotateCcw,
-  Lock,
-  Unlock,
-  Share2,
-  BarChart2
-} from 'lucide-react';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
+import
+  {
+    TrendingUp,
+    TrendingDown,
+    AlertTriangle,
+    History,
+    ArrowRight,
+    RotateCcw,
+    Lock,
+    Unlock,
+    Share2,
+    BarChart2
+  } from 'lucide-react';
+import
+  {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+  } from '@/components/ui/tooltip';
+import
+  {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+  } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { useDashboard } from './DashboardProvider';
 
-interface PriceImpact {
+interface PriceImpact
+{
   margin: number;
   volume: number;
   revenue: number;
   marketShare: number;
 }
 
-interface PricingConsoleProps {
+interface PricingConsoleProps
+{
   currentPrice: number;
   minPrice?: number;
   maxPrice?: number;
@@ -54,10 +59,11 @@ const PricingConsole: React.FC<PricingConsoleProps> = ({
   maxPrice = 2.5,
   onPriceChange,
   onPriceConfirm
-}) => {
-  const { marketData, metrics, preferences } = useDashboard();
+}) =>
+{
+  const { marketData, metrics } = useDashboard();
   const [price, setPrice] = useState(currentPrice);
-  const [priceHistory, setPriceHistory] = useState<Array<{price: number; timestamp: Date; type: string}>>([
+  const [priceHistory, setPriceHistory] = useState<Array<{ price: number; timestamp: Date; type: string }>>([
     { price: currentPrice, timestamp: new Date(), type: 'manual' }
   ]);
   const [showHistory, setShowHistory] = useState(false);
@@ -70,8 +76,10 @@ const PricingConsole: React.FC<PricingConsoleProps> = ({
   const [priceLocked, setPriceLocked] = useState(false);
   const [adjustmentMode, setAdjustmentMode] = useState<'manual' | 'smart'>('manual');
 
-  useEffect(() => {
-    const calculateImpact = () => {
+  useEffect(() =>
+  {
+    const calculateImpact = () =>
+    {
       const priceDiff = price - currentPrice;
       const volumeImpact = -priceDiff * 5000; // Enhanced elasticity model
       const baseVolume = metrics.volumeSold;
@@ -80,7 +88,7 @@ const PricingConsole: React.FC<PricingConsoleProps> = ({
       const newRevenue = price * newVolume;
       const revenueImpact = newRevenue - oldRevenue;
       const marketShareImpact = (price > marketData.competitorAvgPrice) ? -2.5 : 1.5;
-      
+
       return {
         margin: priceDiff * newVolume,
         volume: (volumeImpact / baseVolume) * 100,
@@ -92,14 +100,17 @@ const PricingConsole: React.FC<PricingConsoleProps> = ({
     setImpact(calculateImpact());
   }, [price, currentPrice, metrics.volumeSold, marketData.competitorAvgPrice]);
 
-  const handlePriceChange = (value: number[]) => {
-    if (!priceLocked) {
+  const handlePriceChange = (value: number[]) =>
+  {
+    if (!priceLocked)
+    {
       setPrice(value[0]);
       onPriceChange?.(value[0]);
     }
   };
 
-  const handlePriceConfirm = () => {
+  const handlePriceConfirm = () =>
+  {
     setPriceHistory([
       { price, timestamp: new Date(), type: adjustmentMode },
       ...priceHistory.slice(0, 9)
@@ -107,7 +118,8 @@ const PricingConsole: React.FC<PricingConsoleProps> = ({
     onPriceConfirm?.(price);
   };
 
-  const getSmartPriceSuggestion = () => {
+  const getSmartPriceSuggestion = () =>
+  {
     // Smart price calculation based on multiple factors
     const competitorAvg = marketData.competitorAvgPrice;
     const targetMargin = metrics.targetMargin / 100;
@@ -121,17 +133,19 @@ const PricingConsole: React.FC<PricingConsoleProps> = ({
     return suggestedPrice;
   };
 
-  const handleSmartAdjustment = () => {
+  const handleSmartAdjustment = () =>
+  {
     const suggestedPrice = getSmartPriceSuggestion();
     setPrice(suggestedPrice);
     setAdjustmentMode('smart');
   };
 
-  const formatTimeDiff = (date: Date) => {
+  const formatTimeDiff = (date: Date) =>
+  {
     const diff = new Date().getTime() - date.getTime();
     const hours = Math.floor(diff / (1000 * 60 * 60));
     const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-    
+
     if (hours > 0) return `${hours}h ago`;
     return `${minutes}m ago`;
   };
@@ -210,13 +224,12 @@ const PricingConsole: React.FC<PricingConsoleProps> = ({
               </span>
               <span className="text-sm text-gray-500 ml-1">/L</span>
               {price !== marketData.competitorAvgPrice && (
-                <Badge 
-                  variant="outline" 
-                  className={`ml-2 ${
-                    price > marketData.competitorAvgPrice 
-                      ? 'bg-red-50 text-red-700' 
+                <Badge
+                  variant="outline"
+                  className={`ml-2 ${price > marketData.competitorAvgPrice
+                      ? 'bg-red-50 text-red-700'
                       : 'bg-green-50 text-green-700'
-                  }`}
+                    }`}
                 >
                   {price > marketData.competitorAvgPrice ? 'Above' : 'Below'} Market
                 </Badge>
@@ -310,7 +323,7 @@ const PricingConsole: React.FC<PricingConsoleProps> = ({
             </div>
             <div className="space-y-2 max-h-48 overflow-y-auto">
               {priceHistory.map((record, index) => (
-                <div 
+                <div
                   key={index}
                   className="flex items-center justify-between p-2 bg-gray-50 rounded hover:bg-gray-100 transition-colors"
                 >
@@ -335,7 +348,7 @@ const PricingConsole: React.FC<PricingConsoleProps> = ({
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
-                <Button 
+                <Button
                   className="flex-1 transition-all"
                   onClick={handlePriceConfirm}
                   disabled={price === currentPrice || priceLocked}
@@ -349,8 +362,8 @@ const PricingConsole: React.FC<PricingConsoleProps> = ({
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
-          
-          <Button 
+
+          <Button
             variant="outline"
             onClick={() => setPrice(currentPrice)}
             disabled={price === currentPrice || priceLocked}

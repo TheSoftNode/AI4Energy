@@ -1,31 +1,31 @@
-// components/Navigation.tsx
+"use client"
 
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import
-    {
-        Bell,
-        Settings,
-        Menu,
-        X,
-        ChevronDown,
-        User,
-        LogOut,
-        HelpCircle,
-        Home,
-        Activity,
-        TrendingUp,
-        BarChart2
-    } from 'lucide-react';
+{
+    Bell,
+    Settings,
+    Menu,
+    X,
+    ChevronDown,
+    User,
+    LogOut,
+    HelpCircle,
+    Home,
+    Activity,
+    TrendingUp,
+    BarChart2
+} from 'lucide-react';
 import
-    {
-        DropdownMenu,
-        DropdownMenuContent,
-        DropdownMenuItem,
-        DropdownMenuLabel,
-        DropdownMenuSeparator,
-        DropdownMenuTrigger,
-    } from '@/components/ui/dropdown-menu';
+{
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { Badge } from '@/components/ui/badge';
 import { useCallback } from 'react';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
@@ -80,11 +80,11 @@ const Navigation: React.FC<NavigationProps> = ({ currentView }) =>
             icon: <Activity className="h-4 w-4" />,
             view: 'pricing' as const,
         },
-        // {
-        //     title: 'Competition',
-        //     icon: <TrendingUp className="h-4 w-4" />,
-        //     view: 'competition' as const,
-        // },
+        {
+            title: 'Competition',
+            icon: <TrendingUp className="h-4 w-4" />,
+            view: 'competition' as const,
+        },
         {
             title: 'Analytics',
             icon: <BarChart2 className="h-4 w-4" />,
@@ -146,10 +146,10 @@ const Navigation: React.FC<NavigationProps> = ({ currentView }) =>
                                     <DropdownMenuItem key={notification.id} className="flex items-center py-2">
                                         <div
                                             className={`w-2 h-2 rounded-full mr-2 ${notification.type === 'warning'
-                                                    ? 'bg-yellow-400'
-                                                    : notification.type === 'success'
-                                                        ? 'bg-green-400'
-                                                        : 'bg-blue-400'
+                                                ? 'bg-yellow-400'
+                                                : notification.type === 'success'
+                                                    ? 'bg-green-400'
+                                                    : 'bg-blue-400'
                                                 }`}
                                         />
                                         <div className="flex-1">

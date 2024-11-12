@@ -1,40 +1,39 @@
-// components/AnalyticsDashboard.tsx
-
+"use client"
 import React, { useState } from 'react';
 import { Card, CardHeader, CardContent, CardTitle } from '@/components/ui/card';
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Area, AreaChart, ScatterChart, Scatter, ComposedChart } from 'recharts';
 import { Button } from '@/components/ui/button';
 import
-    {
-        Select,
-        SelectContent,
-        SelectItem,
-        SelectTrigger,
-        SelectValue,
-    } from "@/components/ui/select";
+{
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
 import { Badge } from '@/components/ui/badge';
 import
-    {
-        TrendingUp,
-        TrendingDown,
-        Calendar,
-        Download,
-        Share2,
-        Filter,
-        RefreshCw,
-        ChevronDown,
-        AlertTriangle,
-        ArrowRight,
-        Zap
-    } from 'lucide-react';
+{
+    TrendingUp,
+    TrendingDown,
+    Calendar,
+    Download,
+    Share2,
+    Filter,
+    RefreshCw,
+    ChevronDown,
+    AlertTriangle,
+    ArrowRight,
+    Zap
+} from 'lucide-react';
 import
-    {
-        Dialog,
-        DialogContent,
-        DialogHeader,
-        DialogTitle,
-        DialogTrigger,
-    } from "@/components/ui/dialog";
+{
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { useDashboard } from './DashboardProvider';
 
@@ -129,8 +128,8 @@ const AnalyticsDashboard = () =>
                     <div className="flex items-end justify-between">
                         <span className="text-2xl font-bold">{metric.value}%</span>
                         <div className={`flex items-center ${metric.trend === 'up' ? 'text-green-500' :
-                                metric.trend === 'down' ? 'text-red-500' :
-                                    'text-gray-500'
+                            metric.trend === 'down' ? 'text-red-500' :
+                                'text-gray-500'
                             }`}>
                             {metric.trend === 'up' ? (
                                 <TrendingUp className="h-4 w-4 mr-1" />
@@ -396,8 +395,8 @@ const AnalyticsDashboard = () =>
                         ].map((insight, index) => (
                             <div key={index} className="flex items-start space-x-4 p-4 bg-gray-50 rounded-lg">
                                 <div className={`mt-1 h-3 w-3 rounded-full ${insight.impact === 'High' ? 'bg-blue-500' :
-                                        insight.impact === 'Medium' ? 'bg-yellow-500' :
-                                            'bg-gray-500'
+                                    insight.impact === 'Medium' ? 'bg-yellow-500' :
+                                        'bg-gray-500'
                                     }`} />
                                 <div className="flex-1">
                                     <div className="flex items-start justify-between">

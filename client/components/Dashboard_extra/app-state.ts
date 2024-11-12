@@ -27,7 +27,7 @@ export interface UserPreferences
 
 export interface NavigationState
 {
-  currentView: 'dashboard' | 'pricing' | 'competition' | 'analytics';
+  currentView: 'overview' | 'pricing' | 'competition' | 'analytics' | 'settings';
   isMobileMenuOpen: boolean;
   notifications: NotificationType[];
 }
@@ -40,14 +40,17 @@ export interface DashboardFilters
   showAutomatedRules: boolean;
 }
 
-export type DashboardView = 'overview' | 'pricing' |  'analytics' | 'settings';
+export type DashboardView = 'overview' | 'pricing' | 'analytics' | 'competition' | 'settings';
 
 export type ViewMode = 'compact' | 'detailed' | 'analysis';
-export interface DashboardNavigation {
+export interface DashboardNavigation
+{
   currentView: DashboardView;
 }
 
-export interface DashboardContextType {
+export interface DashboardContextType
+{
+  view: DashboardView;
   navigation: DashboardNavigation;
   metrics: StationMetrics;
   competitors: Competitor[];

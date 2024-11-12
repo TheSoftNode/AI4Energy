@@ -1,4 +1,4 @@
-// components/AutomatedRules.tsx
+"use client"
 
 import React, { useState } from 'react';
 import { Card, CardHeader, CardContent, CardTitle } from '@/components/ui/card';
@@ -9,46 +9,46 @@ import { Input } from '@/components/ui/input';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Slider } from '@/components/ui/slider';
 import
-    {
-        Dialog,
-        DialogContent,
-        DialogDescription,
-        DialogHeader,
-        DialogTitle,
-        DialogTrigger,
-        DialogFooter,
-    } from "@/components/ui/dialog";
+{
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+    DialogFooter,
+} from "@/components/ui/dialog";
 import
-    {
-        Select,
-        SelectContent,
-        SelectItem,
-        SelectTrigger,
-        SelectValue,
-    } from "@/components/ui/select";
+{
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
 import
-    {
-        Shield,
-        Zap,
-        Clock,
-        TrendingUp,
-        AlertTriangle,
-        Info,
-        Settings,
-        Plus,
-        Edit,
-        Trash2,
-        Activity,
-        Save,
-        RotateCcw
-    } from 'lucide-react';
+{
+    Shield,
+    Zap,
+    Clock,
+    TrendingUp,
+    AlertTriangle,
+    Info,
+    Settings,
+    Plus,
+    Edit,
+    Trash2,
+    Activity,
+    Save,
+    RotateCcw
+} from 'lucide-react';
 import
-    {
-        Tooltip,
-        TooltipContent,
-        TooltipProvider,
-        TooltipTrigger,
-    } from '@/components/ui/tooltip';
+{
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+} from '@/components/ui/tooltip';
 import { useDashboard } from './DashboardProvider';
 
 interface Rule
