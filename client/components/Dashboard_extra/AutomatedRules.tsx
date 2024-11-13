@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card, CardHeader, CardContent, CardTitle } from '@/components/ui/card';
 import { Switch } from '@/components/ui/switch';
 import { Badge } from '@/components/ui/badge';
@@ -50,45 +50,7 @@ import
     TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { useDashboard } from './DashboardProvider';
-
-interface Rule
-{
-    id: string;
-    name: string;
-    description: string;
-    enabled: boolean;
-    threshold?: number;
-    icon: React.ReactNode;
-    category: 'protection' | 'optimization' | 'timing';
-    conditions: RuleCondition[];
-    actions: RuleAction[];
-    priority: number;
-    lastTriggered?: Date;
-    statistics: RuleStatistics;
-}
-
-interface RuleCondition
-{
-    type: 'price' | 'margin' | 'inventory' | 'time' | 'competitor';
-    operator: 'greater' | 'less' | 'equal' | 'between';
-    value: number | string;
-    value2?: number | string; // For 'between' operator
-}
-
-interface RuleAction
-{
-    type: 'adjust_price' | 'notify' | 'lock_price';
-    value: number | string;
-    duration?: number; // For lock_price
-}
-
-interface RuleStatistics
-{
-    timesTriggered: number;
-    lastSuccess: Date | null;
-    averageImpact: number;
-    failureRate: number;
-}
+import { PriceRule, RuleAction, RuleCondition } from './interface';
 
 interface AutomatedRulesProps
 {
@@ -97,72 +59,21 @@ interface AutomatedRulesProps
 
 const AutomatedRules: React.FC<AutomatedRulesProps> = ({ onRuleChange }) =>
 {
-    const { marketData, metrics } = useDashboard();
-    const [rules, setRules] = useState<Rule[]>([
+
+    const { rules: initialRules } = useDashboard();
+    const [rules, setRules] = useState<PriceRule[]>([]);
+
+    useEffect(() =>
+    {
+        if (initialRules)
         {
-            id: 'min-margin',
-            name: 'Minimum Margin Protection',
-            description: 'Maintain minimum gross margin threshold',
-            enabled: true,
-            threshold: 5,
-            icon: <Shield className="h-5 w-5" />,
-            category: 'protection',
-            conditions: [
-                {
-                    type: 'margin',
-                    operator: 'less',
-                    value: 5
-                }
-            ],
-            actions: [
-                {
-                    type: 'adjust_price',
-                    value: 0.05
-                }
-            ],
-            priority: 1,
-            statistics: {
-                timesTriggered: 15,
-                lastSuccess: new Date(),
-                averageImpact: 2.3,
-                failureRate: 0.1
-            }
-        },
-        {
-            id: 'competitor-match',
-            name: 'Competitor Matching',
-            description: 'Automatically match competitor prices within range',
-            enabled: true,
-            threshold: 2,
-            icon: <TrendingUp className="h-5 w-5" />,
-            category: 'optimization',
-            conditions: [
-                {
-                    type: 'competitor',
-                    operator: 'less',
-                    value: -0.02
-                }
-            ],
-            actions: [
-                {
-                    type: 'adjust_price',
-                    value: 'match'
-                }
-            ],
-            priority: 2,
-            statistics: {
-                timesTriggered: 28,
-                lastSuccess: new Date(),
-                averageImpact: 1.8,
-                failureRate: 0.15
-            }
-        },
-        // Add more predefined rules...
-    ]);
+            setRules(initialRules);
+        }
+    }, [initialRules]);
 
     const [showAlert, setShowAlert] = useState(false);
     const [expandedRule, setExpandedRule] = useState<string | null>(null);
-    const [editingRule, setEditingRule] = useState<Rule | null>(null);
+    const [editingRule, setEditingRule] = useState<PriceRule | null>(null);
     const [isNewRule, setIsNewRule] = useState(false);
 
     const handleRuleToggle = (ruleId: string, enabled: boolean) =>
@@ -205,7 +116,7 @@ const AutomatedRules: React.FC<AutomatedRulesProps> = ({ onRuleChange }) =>
         setRules(prevRules => prevRules.filter(rule => rule.id !== ruleId));
     };
 
-    const handleEditRule = (rule: Rule) =>
+    const handleEditRule = (rule: PriceRule) =>
     {
         setEditingRule(rule);
         setIsNewRule(false);
@@ -233,7 +144,7 @@ const AutomatedRules: React.FC<AutomatedRulesProps> = ({ onRuleChange }) =>
         setIsNewRule(true);
     };
 
-    const handleSaveRule = (rule: Rule) =>
+    const handleSaveRule = (rule: PriceRule) =>
     {
         if (isNewRule)
         {
@@ -247,7 +158,7 @@ const AutomatedRules: React.FC<AutomatedRulesProps> = ({ onRuleChange }) =>
         setEditingRule(null);
     };
 
-    const getRuleCategoryColor = (category: Rule['category'], enabled: boolean) =>
+    const getRuleCategoryColor = (category: PriceRule['category'], enabled: boolean) =>
     {
         if (!enabled) return 'bg-gray-50';
         switch (category)
@@ -266,33 +177,34 @@ const AutomatedRules: React.FC<AutomatedRulesProps> = ({ onRuleChange }) =>
     return (
         <Card className="w-full">
             <CardHeader>
-                <div className="flex items-center justify-between">
-                    <div className="space-y-1">
-                        <CardTitle className="flex items-center space-x-2">
-                            <Settings className="h-5 w-5" />
-                            <span>Automated Rules</span>
-                        </CardTitle>
-                        <p className="text-sm text-gray-500">
-                            Configure automatic price adjustments
-                        </p>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                        <Badge
-                            variant="outline"
-                            className={`${rules.filter(r => r.enabled).length > 0 ? 'bg-green-50 text-green-700' : 'bg-gray-50'}`}
-                        >
-                            {rules.filter(r => r.enabled).length} Active Rules
-                        </Badge>
-                        <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={handleCreateRule}
-                        >
-                            <Plus className="h-4 w-4 mr-2" />
-                            New Rule
-                        </Button>
-                    </div>
+                <div className="space-y-1">
+                    <CardTitle className="flex items-center space-x-2">
+                        <Settings className="h-5 w-5" />
+                        <span className='text-base'>Automated Rules</span>
+                    </CardTitle>
+                    <p className="text-sm text-gray-500">
+                        Configure automatic price adjustments
+                    </p>
                 </div>
+                {/* <div className="flex flex-wrap gap-4 items-center justify-between"> */}
+
+                <div className="flex items-center justify-between space-x-2">
+                    <Badge
+                        variant="outline"
+                        className={`${rules.filter(r => r.enabled).length > 0 ? 'bg-green-50 text-green-700' : 'bg-gray-50'}`}
+                    >
+                        {rules.filter(r => r.enabled).length} Active Rules
+                    </Badge>
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={handleCreateRule}
+                    >
+                        <Plus className="h-4 w-4 mr-2" />
+                        New Rule
+                    </Button>
+                </div>
+                {/* </div> */}
             </CardHeader>
             <CardContent className="space-y-6">
                 {showAlert && (
@@ -334,9 +246,9 @@ const AutomatedRules: React.FC<AutomatedRulesProps> = ({ onRuleChange }) =>
                   `}>
                                         {rule.icon}
                                     </div>
-                                    <div className="space-y-1">
-                                        <div className="font-medium flex items-center space-x-2">
-                                            <span>{rule.name}</span>
+                                    <div className="space-y-2">
+                                        <div className="font-medium flex-wrap gap-3 flex items-center space-x-2">
+                                            <span className='text-base'>{rule.name}</span>
                                             <Badge variant="outline" className="text-xs">
                                                 {rule.category}
                                             </Badge>
@@ -396,13 +308,13 @@ const AutomatedRules: React.FC<AutomatedRulesProps> = ({ onRuleChange }) =>
                                         </div>
                                     )}
 
-                                    <div className="grid grid-cols-2 gap-4">
+                                    <div className="grid grid-cols-1 gap-4">
                                         <div className="p-3 bg-white rounded-lg border">
                                             <h4 className="text-sm font-medium mb-2">Statistics</h4>
                                             <div className="space-y-1 text-sm">
-                                                <p>Times triggered: {rule.statistics.timesTriggered}</p>
-                                                <p>Average impact: {rule.statistics.averageImpact}%</p>
-                                                <p>Failure rate: {(rule.statistics.failureRate * 100).toFixed(1)}%</p>
+                                                <p>Times triggered: {rule.statistics?.timesTriggered}</p>
+                                                <p>Average impact: {rule.statistics?.averageImpact}%</p>
+                                                <p>Failure rate: {((rule.statistics?.failureRate ?? 0) * 100).toFixed(1)}%</p>
                                             </div>
                                         </div>
                                         <div className="p-3 bg-white rounded-lg border">
@@ -424,6 +336,23 @@ const AutomatedRules: React.FC<AutomatedRulesProps> = ({ onRuleChange }) =>
                                             Priority level: {rule.priority} - Higher priority rules are evaluated first
                                         </span>
                                     </div>
+
+                                    <div className="flex items-center justify-end space-x-2">
+                                        <TooltipProvider>
+                                            <Tooltip>
+                                                <TooltipTrigger asChild>
+                                                    <Button
+                                                        variant="ghost"
+                                                        size="sm"
+                                                        onClick={() => handleDeleteRule(rule.id)}
+                                                    >
+                                                        <Trash2 className="h-4 w-4" />
+                                                    </Button>
+                                                </TooltipTrigger>
+                                                <TooltipContent>Delete rule</TooltipContent>
+                                            </Tooltip>
+                                        </TooltipProvider>
+                                    </div>
                                 </div>
                             )}
                         </div>
@@ -442,7 +371,7 @@ const AutomatedRules: React.FC<AutomatedRulesProps> = ({ onRuleChange }) =>
                         </DialogHeader>
 
                         {editingRule && (
-                            <div className="space-y-4 py-4">
+                            <div className="space-y-4 py-4 lg:h-[400px] overflow-y-auto ">
                                 <div className="space-y-2">
                                     <label className="text-sm font-medium">Rule Name</label>
                                     <Input
@@ -469,7 +398,7 @@ const AutomatedRules: React.FC<AutomatedRulesProps> = ({ onRuleChange }) =>
                                     <label className="text-sm font-medium">Category</label>
                                     <Select
                                         value={editingRule.category}
-                                        onValueChange={(value: Rule['category']) =>
+                                        onValueChange={(value: PriceRule['category']) =>
                                             setEditingRule({
                                                 ...editingRule,
                                                 category: value
@@ -487,7 +416,7 @@ const AutomatedRules: React.FC<AutomatedRulesProps> = ({ onRuleChange }) =>
                                 </div>
 
                                 <div className="space-y-2">
-                                    <label className="text-sm font-medium">Conditions</label>
+                                    <label className="text-sm mr-4 font-medium">Conditions</label>
                                     {editingRule.conditions.map((condition, index) => (
                                         <div key={index} className="flex items-center space-x-2">
                                             <Select
@@ -609,7 +538,7 @@ const AutomatedRules: React.FC<AutomatedRulesProps> = ({ onRuleChange }) =>
                                 </div>
 
                                 <div className="space-y-2">
-                                    <label className="text-sm font-medium">Actions</label>
+                                    <label className="text-sm mr-4 font-medium">Actions</label>
                                     {editingRule.actions.map((action, index) => (
                                         <div key={index} className="flex items-center space-x-2">
                                             <Select

@@ -8,6 +8,7 @@ import type {
   PriceRule,
 } from './interface';
 import { NotificationType } from './app-state';
+import { Shield, TrendingUp } from 'lucide-react';
 
 interface DashboardState
 {
@@ -62,8 +63,71 @@ const DashboardProviderComponent: React.FC<{ children: React.ReactNode }> = ({ c
       avgVolumeSold: 8500,
       avgCustomerCount: 450
     },
-    rules: [],
-    notifications: [],
+    rules: [
+      {
+        id: 'min-margin',
+        name: 'Minimum Margin Protection',
+        description: 'Maintain minimum gross margin threshold',
+        enabled: true,
+        threshold: 5,
+        icon: <Shield className="h-5 w-5" />,
+        category: 'protection',
+        conditions: [
+            {
+                type: 'price',
+                operator: 'greater',
+                value: 5
+            }
+        ],
+        actions: [
+            {
+                type: 'notify',
+                value: 2,
+            }
+        ],
+        priority: 1,
+        statistics: {
+            timesTriggered: 15,
+            lastSuccess: new Date(),
+            averageImpact: 2.3,
+            failureRate: 0.1
+        }
+    },
+    {
+        id: 'competitor-match',
+        name: 'Competitor Matching',
+        description: 'Automatically match competitor prices within range',
+        enabled: true,
+        threshold: 2,
+        icon: <TrendingUp className="h-5 w-5" />,
+        category: 'optimization',
+        conditions: [
+            {
+                type: 'price',
+                operator: 'less',
+                value: -0.02
+            }
+        ],
+        actions: [
+            {
+                type: 'adjust_price',
+                value: 100
+            }
+        ],
+        priority: 2,
+        statistics: {
+            timesTriggered: 28,
+            lastSuccess: new Date(),
+            averageImpact: 1.8,
+            failureRate: 0.15
+        }
+    },
+    ],
+    notifications: [
+      { id: '1', message: 'Competitor price change detected', type: 'warning', timestamp: new Date() },
+      { id: '2', message: 'Margin target achieved', type: 'success', timestamp: new Date() },
+      { id: '3', message: 'New pricing rule activated', type: 'info', timestamp: new Date() }
+    ],
     settings: {
       currency: 'EUR',
       timezone: 'Europe/Paris',

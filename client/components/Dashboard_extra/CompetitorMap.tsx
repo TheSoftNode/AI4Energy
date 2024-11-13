@@ -174,14 +174,14 @@ const CompetitorMap: React.FC<CompetitorMapProps> = ({
 
     return (
         <Card className="col-span-2">
-            <CardHeader className="flex-row items-center justify-between space-y-0 pb-4">
+            <CardHeader className="flex-row flex-wrap gap-3 items-center justify-between space-y-0 pb-4">
                 <div className="space-y-1">
                     <CardTitle className="text-xl font-bold">Competition Map</CardTitle>
                     <p className="text-sm text-gray-500">
                         {filteredCompetitors.length} competitors within {searchRadius}km
                     </p>
                 </div>
-                <div className="flex items-center space-x-2">
+                <div className="flex flex-wrap gap-3 items-center space-x-2">
                     <Select
                         value={mapView}
                         onValueChange={(value: 'standard' | 'heatmap' | 'cluster') => setMapView(value)}
@@ -637,8 +637,8 @@ const CompetitorMap: React.FC<CompetitorMapProps> = ({
                 </div>
 
                 {/* Legend */}
-                <div className="mt-4 flex items-center justify-between text-sm">
-                    <div className="flex items-center space-x-4">
+                <div className="mt-4 flex flex-wrap gap-5 items-center justify-between text-sm">
+                    <div className="flex flex-wrap gap-3 items-center space-x-4">
                         <div className="flex items-center">
                             <div className="w-3 h-3 rounded-full bg-green-500 mr-2" />
                             <span>Below Average</span>

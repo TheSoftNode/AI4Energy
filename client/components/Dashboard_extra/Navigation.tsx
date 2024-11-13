@@ -43,7 +43,7 @@ const Navigation: React.FC<NavigationProps> = ({ currentView }) =>
     const router = useRouter();
     const pathname = usePathname();
     const searchParams = useSearchParams();
-    const { notifications, setView } = useDashboard();
+    const { notifications, rules, setView } = useDashboard();
 
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -112,7 +112,7 @@ const Navigation: React.FC<NavigationProps> = ({ currentView }) =>
                     </div>
 
                     {/* Desktop Navigation */}
-                    <div className="hidden md:flex space-x-1">
+                    <div className="hidden lg:flex space-x-1">
                         {navItems.map((item) => (
                             <Button
                                 key={item.view}
@@ -202,7 +202,7 @@ const Navigation: React.FC<NavigationProps> = ({ currentView }) =>
                     <Button
                         variant="ghost"
                         size="icon"
-                        className="md:hidden"
+                        className="lg:hidden"
                         onClick={toggleMobileMenu}
                     >
                         {isMobileMenuOpen ? (
@@ -216,7 +216,7 @@ const Navigation: React.FC<NavigationProps> = ({ currentView }) =>
 
             {/* Mobile Menu */}
             {isMobileMenuOpen && (
-                <div className="md:hidden absolute top-16 left-0 right-0 bg-white border-b shadow-lg">
+                <div className="lg:hidden absolute top-16 left-0 right-0 bg-white border-b shadow-lg">
                     <div className="container mx-auto py-4 px-4 space-y-2">
                         {navItems.map((item) => (
                             <Button

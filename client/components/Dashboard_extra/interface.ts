@@ -32,6 +32,29 @@ export interface PriceChange
   reason?: string;
 }
 
+export interface RuleCondition
+{
+    type: 'price' | 'margin' | 'inventory' | 'time' | 'competitor';
+    operator: 'greater' | 'less' | 'equal' | 'between';
+    value: number | string;
+    value2?: number | string; 
+}
+
+export interface RuleAction
+{
+    type: 'adjust_price' | 'notify' | 'lock_price';
+    value: number | string;
+    duration?: number; 
+}
+
+export interface RuleStatistics
+{
+    timesTriggered: number;
+    lastSuccess: Date | null;
+    averageImpact: number;
+    failureRate?: number;
+}
+
 export interface PriceRule
 {
   id: string;
@@ -41,7 +64,13 @@ export interface PriceRule
   threshold?: number;
   icon: React.ReactNode;
   category: 'protection' | 'optimization' | 'timing';
+  conditions: RuleCondition[];
+  actions: RuleAction[];
+  priority?: number;
+  lastTriggered?: Date;
+  statistics?: RuleStatistics;
 }
+
 
 export interface MarketData
 {

@@ -153,10 +153,10 @@ const PricingConsole: React.FC<PricingConsoleProps> = ({
   return (
     <Card className="w-full">
       <CardHeader>
-        <div className="flex items-center justify-between">
+        <div className="flex flex-wrap sm:flex-nowrap gap-4 items-center justify-between">
           <div className="space-y-1">
             <CardTitle className="flex items-center space-x-2">
-              <span className='text-base'>Price Adjustment</span>
+              <span className='text-lg'>Price Adjustment</span>
               {priceLocked && (
                 <Badge variant="outline" className="ml-2">Locked</Badge>
               )}
@@ -165,7 +165,7 @@ const PricingConsole: React.FC<PricingConsoleProps> = ({
               {adjustmentMode === 'smart' ? 'AI-Optimized Pricing' : 'Manual Price Control'}
             </p>
           </div>
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-3">
             <Button
               variant="outline"
               size="sm"
