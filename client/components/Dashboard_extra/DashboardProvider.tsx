@@ -53,7 +53,53 @@ const DashboardProviderComponent: React.FC<{ children: React.ReactNode }> = ({ c
       volumeSold: 200,
       customerCount: 80
     },
-    competitors: [],
+    competitors: [
+        {
+          id: '1',
+          name: 'Station A',
+          price: 1.85,
+          distance: 2.1,
+          latitude: 48.8566,
+          longitude: 2.3522,
+          priceComparison: 'above'
+        },
+        {
+          id: '2', 
+          name: 'Station B',
+          price: 1.79,
+          distance: 3.5,
+          latitude: 48.8504,
+          longitude: 2.3482,
+          priceComparison: 'below'
+        },
+        {
+          id: '3',
+          name: 'Station C',
+          price: 1.82,
+          distance: 4.2,
+          latitude: 48.8532,
+          longitude: 2.3562,
+          priceComparison: 'equal'
+        },
+        {
+          id: '4',
+          name: 'Station D',
+          price: 1.83,
+          distance: 5.1,
+          latitude: 48.8587,
+          longitude: 2.3501,
+          priceComparison: 'above'
+        },
+        {
+          id: '5',
+          name: 'Station E',
+          price: 1.77,
+          distance: 2.8,
+          latitude: 48.8545,
+          longitude: 2.3512,
+          priceComparison: 'below'
+        }
+    ],
     marketData: {
       competitorAvgPrice: 1.849,
       marketShare: 28.5,

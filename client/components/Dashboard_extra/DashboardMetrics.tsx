@@ -12,10 +12,6 @@ import
   BarChart3,
   Clock,
   Target,
-  Share2,
-  Calendar,
-  RefreshCcw,
-  ArrowRight,
   ChevronDown
 } from 'lucide-react';
 import
@@ -25,15 +21,7 @@ import
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import
-{
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Badge } from '@/components/ui/badge';
+
 import { Button } from '@/components/ui/button';
 import
 {
@@ -44,13 +32,6 @@ import
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import
-{
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer } from 'recharts';
 import { useDashboard } from './DashboardProvider';
 

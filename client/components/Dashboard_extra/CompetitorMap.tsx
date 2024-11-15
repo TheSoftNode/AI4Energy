@@ -49,6 +49,10 @@ import
 } from "@/components/ui/tooltip";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer } from 'recharts';
 import { useDashboard } from './DashboardProvider';
+import mapboxgl from 'mapbox-gl';
+import 'mapbox-gl/dist/mapbox-gl.css';
+
+mapboxgl.accessToken = 'pk.eyJ1IjoidGhlc29mdCIsImEiOiJjbTNqMjY5ZXowODdpMmtzZXA5Nm9ycmJiIn0.4ch5c7tjwTC9oDdX0xgruQ';
 
 interface CompetitorMapProps
 {
@@ -88,6 +92,41 @@ const CompetitorMap: React.FC<CompetitorMapProps> = ({
     const [mapView, setMapView] = useState<'standard' | 'heatmap' | 'cluster'>('standard');
     const [timeRange, setTimeRange] = useState<'24h' | '7d' | '30d'>('24h');
     const [competitorAnalysis, setCompetitorAnalysis] = useState<CompetitorAnalysis | null>(null);
+
+    const [map, setMap] = useState<mapboxgl.Map | null>(null);
+
+    useEffect(() =>
+    {
+        const initMap = () =>
+        {
+            const mapContainer = document.getElementById('map');
+            if (mapContainer)
+            {
+                const newMap = new mapboxgl.Map({
+                    container: mapContainer,
+                    style: 'mapbox://styles/mapbox/streets-v11',
+                    center: [centerLng, centerLat],
+                    zoom: 12
+                });
+                setMap(newMap);
+            }
+        };
+        initMap();
+    }, [centerLat, centerLng]);
+
+    useEffect(() =>
+    {
+        if (map)
+        {
+            // Add markers for competitors
+            competitors.forEach((competitor) =>
+            {
+                new mapboxgl.Marker()
+                    .setLngLat([competitor.latitude, competitor.longitude])
+                    .addTo(map);
+            });
+        }
+    }, [map, competitors]);
 
     // Mock price history data generation
     const generatePriceHistory = (basePrice: number) =>
@@ -310,7 +349,8 @@ const CompetitorMap: React.FC<CompetitorMapProps> = ({
                     <div className="absolute inset-0">
                         {/* Map placeholder - would be replaced with actual mapping library */}
                         <div className="w-full h-full flex items-center justify-center">
-                            <Map className="h-12 w-12 text-gray-400" />
+                            {/* <Map className="h-12 w-12 text-gray-400" /> */}
+                            <div id="map" className="w-full h-full" />
                         </div>
                     </div>
 
