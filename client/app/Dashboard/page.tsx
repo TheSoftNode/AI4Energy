@@ -8,16 +8,44 @@ import SettingsMenu from '@/components/Dashboard/SettingsMenu';
 import { DashboardProvider, useDashboard } from '@/components/Dashboard_extra/DashboardProvider';
 import Navigation from '@/components/Dashboard_extra/Navigation';
 import DashboardMetrics from '@/components/Dashboard_extra/DashboardMetrics';
-import CompetitorMap from '@/components/Dashboard_extra/CompetitorMap';
+// import CompetitorMap from '@/components/Dashboard_extra/CompetitorMap';
 import PricingConsole from '@/components/Dashboard_extra/PricingConsole';
 import AutomatedRules from '@/components/Dashboard_extra/AutomatedRules';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { CartesianGrid, Line, LineChart, ResponsiveContainer, XAxis, YAxis } from 'recharts';
+import CompetitorMap from '@/components/CompetitorMap/CompetitorMap';
 
 const DashboardContent = () =>
 {
-    const { view, competitors } = useDashboard();
+    const { view, competitors, clientStation } = useDashboard();
+
+    // const clientStation = {
+    //     id: 'main-station',
+    //     name: 'Our Station',
+    //     latitude: 48.8566,
+    //     longitude: 2.3522,
+    //     recommendations: [
+    //         {
+    //             fuelType: 'Regular Unleaded',
+    //             currentPrice: 1.859,
+    //             recommendedPrice: 1.879,
+    //             confidence: 92
+    //         },
+    //         {
+    //             fuelType: 'Premium Unleaded',
+    //             currentPrice: 1.959,
+    //             recommendedPrice: 1.979,
+    //             confidence: 88
+    //         },
+    //         {
+    //             fuelType: 'Diesel',
+    //             currentPrice: 1.759,
+    //             recommendedPrice: 1.789,
+    //             confidence: 95
+    //         }
+    //     ]
+    // };
 
     const renderContent = () =>
     {
@@ -32,7 +60,14 @@ const DashboardContent = () =>
             case 'settings':
                 return <SettingsMenu />;
             case 'competition':
-                return <CompetitorMap competitors={competitors} centerLat={48.8566} centerLng={2.3522} radius={5} />;
+                return (
+                    <CompetitorMap
+                        competitors={competitors}
+                        clientStation={clientStation}
+                        radius={10}
+                    />
+                );
+            // return <CompetitorMap competitors={competitors} centerLat={48.8566} centerLng={2.3522} radius={5} />;
             default:
                 return <OverviewDashboard />;
         }
@@ -62,6 +97,35 @@ const DashboardLayout = () =>
 const OverviewDashboard = () =>
 {
     const [timeframe, setTimeframe] = useState('today');
+    const { competitors, clientStation } = useDashboard();
+
+    // const clientStation = {
+    //     id: 'main-station',
+    //     name: 'Our Station',
+    //     latitude: 48.8566,
+    //     longitude: 2.3522,
+    //     recommendations: [
+    //         {
+    //             fuelType: 'Regular Unleaded',
+    //             currentPrice: 1.859,
+    //             recommendedPrice: 1.879,
+    //             confidence: 92
+    //         },
+    //         {
+    //             fuelType: 'Premium Unleaded',
+    //             currentPrice: 1.959,
+    //             recommendedPrice: 1.979,
+    //             confidence: 88
+    //         },
+    //         {
+    //             fuelType: 'Diesel',
+    //             currentPrice: 1.759,
+    //             recommendedPrice: 1.789,
+    //             confidence: 95
+    //         }
+    //     ]
+    // };
+
     return (
         <div className="space-y-6">
             <div className="flex flex-wrap gap-3 items-center justify-between">
@@ -107,11 +171,16 @@ const OverviewDashboard = () =>
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <div className="lg:col-span-2">
                     <CompetitorMap
+                        competitors={competitors}
+                        clientStation={clientStation}
+                        radius={10}
+                    />
+                    {/* <CompetitorMap
                         competitors={[]}
                         centerLat={48.8566}
                         centerLng={2.3522}
                         radius={5}
-                    />
+                    /> */}
                 </div>
                 <div className="space-y-6">
                     <PricingConsole

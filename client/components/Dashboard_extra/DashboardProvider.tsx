@@ -10,10 +10,26 @@ import type {
 import { NotificationType } from './app-state';
 import { Shield, TrendingUp } from 'lucide-react';
 
+interface FuelRecommendation {
+  fuelType: string;
+  currentPrice: number;
+  recommendedPrice: number;
+  confidence: number;
+}
+
+interface ClientStation {
+  id: string;
+  name: string;
+  latitude: number;
+  longitude: number;
+  recommendations: FuelRecommendation[];
+}
+
 interface DashboardState
 {
   metrics: StationMetrics;
   competitors: Competitor[];
+  clientStation: ClientStation; 
   marketData: MarketData;
   rules: PriceRule[];
   notifications: NotificationType[];
@@ -27,6 +43,7 @@ interface DashboardState
 
 interface DashboardContextType extends DashboardState
 {
+  updateClientStation: (station: Partial<ClientStation>) => void;
   updateMetrics: (metrics: Partial<StationMetrics>) => void;
   updateCompetitors: (competitors: Competitor[]) => void;
   updateMarketData: (data: Partial<MarketData>) => void;
@@ -53,6 +70,34 @@ const DashboardProviderComponent: React.FC<{ children: React.ReactNode }> = ({ c
       volumeSold: 200,
       customerCount: 80
     },
+
+    clientStation: {
+      id: 'main-station',
+      name: 'Our Station',
+      latitude: 48.8566,
+      longitude: 2.3522,
+      recommendations: [
+        {
+          fuelType: 'Regular Unleaded',
+          currentPrice: 1.859,
+          recommendedPrice: 1.879,
+          confidence: 92
+        },
+        {
+          fuelType: 'Premium Unleaded',
+          currentPrice: 1.959,
+          recommendedPrice: 1.979,
+          confidence: 88
+        },
+        {
+          fuelType: 'Diesel',
+          currentPrice: 1.759,
+          recommendedPrice: 1.789,
+          confidence: 95
+        }
+      ]
+    },
+
     competitors: [
         {
           id: '1',
@@ -222,6 +267,13 @@ const DashboardProviderComponent: React.FC<{ children: React.ReactNode }> = ({ c
     setState(prev => ({ ...prev, rules }));
   };
 
+  const updateClientStation = (station: Partial<ClientStation>) => {
+    setState(prev => ({
+      ...prev,
+      clientStation: { ...prev.clientStation, ...station }
+    }));
+  };
+
   const addNotification = (notification: NotificationType) =>
   {
     setState(prev => ({
@@ -259,6 +311,7 @@ const DashboardProviderComponent: React.FC<{ children: React.ReactNode }> = ({ c
         ...state,
         updateMetrics,
         updateCompetitors,
+        updateClientStation,
         updateMarketData,
         updateRules,
         addNotification,

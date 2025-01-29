@@ -152,14 +152,14 @@ const AnalyticsDashboard = () =>
     return (
         <div className="space-y-6">
             {/* Analytics Header */}
-            <div className="flex items-center justify-between">
+            <div className="flex items-center sm:flex-row flex-col gap-3 justify-between">
                 <div className="space-y-1">
                     <h2 className="text-2xl font-bold">Analytics & Insights</h2>
                     <p className="text-sm text-gray-500">
                         Comprehensive analysis of pricing performance and market dynamics
                     </p>
                 </div>
-                <div className="flex items-center space-x-3">
+                <div className="flex flex-wrap  items-center gap-3">
                     <Select value={timeframe} onValueChange={setTimeframe}>
                         <SelectTrigger className="w-[150px]">
                             <SelectValue />
@@ -190,9 +190,9 @@ const AnalyticsDashboard = () =>
             {/* Trend Analysis */}
             <Card>
                 <CardHeader>
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center flex-wrap gap-2 justify-between">
                         <CardTitle>Market Performance Trends</CardTitle>
-                        <div className="flex items-center space-x-2">
+                        <div className="flex items-center flex-wrap gap-2">
                             <Badge variant="outline" className="bg-blue-50">
                                 AI Analysis
                             </Badge>
@@ -208,7 +208,7 @@ const AnalyticsDashboard = () =>
                 </CardHeader>
                 <CardContent>
                     <Tabs defaultValue="price">
-                        <TabsList>
+                        <TabsList className="flex flex-wrap gap-3 py-3 justify-center h-full mb-3">
                             <TabsTrigger value="price">Price Trends</TabsTrigger>
                             <TabsTrigger value="volume">Volume Analysis</TabsTrigger>
                             <TabsTrigger value="margin">Margin Performance</TabsTrigger>
@@ -241,8 +241,8 @@ const AnalyticsDashboard = () =>
                                 </ResponsiveContainer>
                             </div>
 
-                            <div className="grid grid-cols-3 gap-4">
-                                <Card>
+                            <div className="flex flex-wrap gap-4 w-full">
+                                <Card className="w-full md:w-1/2">
                                     <CardContent className="pt-6">
                                         <div className="space-y-2">
                                             <div className="flex items-center justify-between">
@@ -261,7 +261,7 @@ const AnalyticsDashboard = () =>
                                     </CardContent>
                                 </Card>
 
-                                <Card>
+                                <Card className="w-full md:w-1/2">
                                     <CardContent className="pt-6">
                                         <div className="space-y-2">
                                             <div className="flex items-center justify-between">
@@ -280,7 +280,7 @@ const AnalyticsDashboard = () =>
                                     </CardContent>
                                 </Card>
 
-                                <Card>
+                                <Card className="w-full md:w-1/2">
                                     <CardContent className="pt-6">
                                         <div className="space-y-2">
                                             <div className="flex items-center justify-between">
@@ -399,7 +399,7 @@ const AnalyticsDashboard = () =>
                                         'bg-gray-500'
                                     }`} />
                                 <div className="flex-1">
-                                    <div className="flex items-start justify-between">
+                                    <div className="flex flex-wrap gap-3 items-start justify-between">
                                         <div>
                                             <h4 className="font-medium">{insight.title}</h4>
                                             <p className="text-sm text-gray-600 mt-1">
@@ -414,7 +414,7 @@ const AnalyticsDashboard = () =>
                                             {insight.confidence}% confidence
                                         </Badge>
                                     </div>
-                                    <div className="mt-2 flex items-center justify-between">
+                                    <div className="mt-2 flex flex-wrap gap-3 items-center justify-between">
                                         <Badge variant="outline" className={
                                             insight.impact === 'High' ? 'bg-blue-50' :
                                                 insight.impact === 'Medium' ? 'bg-yellow-50' :
@@ -508,8 +508,8 @@ const AnalyticsDashboard = () =>
                                     </AreaChart>
                                 </ResponsiveContainer>
                             </div>
-                            <div className="flex items-center justify-between">
-                                <div className="flex items-center space-x-4">
+                            <div className="flex flex-wrap gap-4 items-center justify-between">
+                                <div className="flex flex-wrap gap-4 items-center">
                                     <div className="flex items-center">
                                         <div className="w-3 h-3 rounded-full bg-blue-500 mr-2" />
                                         <span className="text-sm">Our Station</span>
