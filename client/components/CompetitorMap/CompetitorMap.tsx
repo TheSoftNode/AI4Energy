@@ -70,7 +70,7 @@ const CompetitorMap: React.FC<CompetitorMapProps> = ({
 {
 
     console.log('CompetitorMap props:', { competitors, clientStation, radius });
-    const { marketData, metrics } = useDashboard();
+    const { marketData, metrics, setView } = useDashboard();
     const [searchRadius, setSearchRadius] = useState(radius);
     const [selectedCompetitor, setSelectedCompetitor] = useState<Competitor | null>(null);
     const [showFilters, setShowFilters] = useState(false);
@@ -80,6 +80,8 @@ const CompetitorMap: React.FC<CompetitorMapProps> = ({
     const [timeRange, setTimeRange] = useState<'24h' | '7d' | '30d'>('24h');
     const [competitorAnalysis, setCompetitorAnalysis] = useState<CompetitorAnalysis | null>(null);
     const [map, setMap] = useState<mapboxgl.Map | null>(null);
+
+
 
     
 
@@ -237,10 +239,17 @@ useEffect(() => {
             tooltip.remove();
         });
 
+       // In CompetitorMap component
+
+// Then in the marker creation code
+clientEl.addEventListener('click', () => {
+    setView('pricing');  // This will switch to the pricing tab
+});
+
         // Add click event to open price console
-        clientEl.addEventListener('click', () => {
-            window.open(`/price-console?station=${station.id}`, '_blank');
-        });
+        // clientEl.addEventListener('click', () => {
+        //     window.open(`/priceconsole?station=${station.id}`, '_blank');
+        // });
 
         bounds.extend([station.longitude, station.latitude]);
     });
