@@ -5,21 +5,21 @@ import { Card, CardHeader, CardContent, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import
-    {
-        Map,
-        Filter,
-        Maximize2,
-        Activity,
-        Clock,
-    } from 'lucide-react';
+{
+    Map,
+    Filter,
+    Maximize2,
+    Activity,
+    Clock,
+} from 'lucide-react';
 import
-    {
-        Select,
-        SelectContent,
-        SelectItem,
-        SelectTrigger,
-        SelectValue,
-    } from "@/components/ui/select";
+{
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { CompetitorAnalysis, PriceHistory } from './types';
@@ -63,11 +63,11 @@ mapboxgl.accessToken = 'pk.eyJ1IjoidGhlc29mdCIsImEiOiJjbTNqMjY5ZXowODdpMmtzZXA5N
 const CompetitorMap: React.FC<CompetitorMapProps> = ({
     competitors,
     clientStation,
-    centerLat = 48.8566,
-    centerLng = 2.3522,
     radius = 10
 }) =>
 {
+
+    console.log('CompetitorMap props:', { competitors, clientStation, radius });
     const { marketData, metrics } = useDashboard();
     const [searchRadius, setSearchRadius] = useState(radius);
     const [selectedCompetitor, setSelectedCompetitor] = useState<Competitor | null>(null);
@@ -102,6 +102,16 @@ const CompetitorMap: React.FC<CompetitorMapProps> = ({
         `;
     };
 
+    useEffect(() =>
+    {
+        console.log('CompetitorMap Mounted:', {
+            hasCompetitors: !!competitors?.length,
+            hasClientStation: !!clientStation,
+            clientStation,
+            competitors
+        });
+    }, [competitors, clientStation]);
+
     // Initialize map
     useEffect(() =>
     {
@@ -113,20 +123,26 @@ const CompetitorMap: React.FC<CompetitorMapProps> = ({
                 const newMap = new mapboxgl.Map({
                     container: mapContainer,
                     style: 'mapbox://styles/mapbox/streets-v11',
-                    center: [centerLng, centerLat],
+                    center: [clientStation.longitude, clientStation.latitude], // Use clientStation coordinates
                     zoom: 12
                 });
                 setMap(newMap);
             }
         };
         initMap();
-    }, [centerLat, centerLng]);
+    }, [clientStation.latitude, clientStation.longitude]);
 
     // Handle markers and interactions
     useEffect(() =>
     {
         if (map)
         {
+            console.log('Creating markers:', {
+                clientStation,
+                clientMarkerCreated: true,
+                clientCoords: [clientStation.longitude, clientStation.latitude]
+            });
+            
             // Clear existing markers
             const existingMarkers = document.querySelectorAll('.mapboxgl-marker');
             existingMarkers.forEach(marker => marker.remove());

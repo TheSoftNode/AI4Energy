@@ -74,8 +74,8 @@ const DashboardProviderComponent: React.FC<{ children: React.ReactNode }> = ({ c
     clientStation: {
       id: 'main-station',
       name: 'Our Station',
-      latitude: 48.8566,
-      longitude: 2.3522,
+      latitude: 48.8590,
+      longitude: 2.3550,
       recommendations: [
         {
           fuelType: 'Regular Unleaded',

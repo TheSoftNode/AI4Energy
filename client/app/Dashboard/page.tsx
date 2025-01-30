@@ -20,6 +20,9 @@ const DashboardContent = () =>
 {
     const { view, competitors, clientStation } = useDashboard();
 
+    console.log('DashboardContent clientStation:', clientStation);
+    console.log('DashboardContent competitors:', competitors);
+
     // const clientStation = {
     //     id: 'main-station',
     //     name: 'Our Station',
